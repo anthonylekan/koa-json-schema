@@ -13,7 +13,7 @@ export const middleware = (schema: object, options?: Ajv.Options) => {
 
     return async (ctx: Context, next: Function) => {
         // @ts-ignore
-        const data = Object.assign({}, ctx.request.query || {}, ctx.request.body || {}, ctx.params || {});
+        const data = Object.assign({}, { query: ctx.request.query || {} }, { body: ctx.request.body || {} }, { params: ctx.params || {} });
         const isValid = validate(data);
         if (!isValid) {
             ctx.throw(422, 'invalid inputs', {error_description: validate.errors});

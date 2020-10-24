@@ -9,9 +9,15 @@ test('validate query parameters: return HTTP 422 status if input is invalid', as
         .use(validator({
             type: 'object',
             properties: {
-                foo: {
-                    type: 'string',
-                    maxLength: 3
+                query: {
+                    type: 'object',
+
+                    properties: {
+                        foo: {
+                            type: 'string',
+                            maxLength: 3
+                        }
+                    }
                 }
             }
         }));
@@ -28,9 +34,14 @@ test('validate query parameters: go through if input is valid', async t => {
         .use(validator({
             type: 'object',
             properties: {
-                foo: {
-                    type: 'string',
-                    maxLength: 3
+                params: {
+                    type: 'object',
+                    properties: {
+                        foo: {
+                            type: 'string',
+                            maxLength: 3
+                        }
+                    }
                 }
             }
         }))
@@ -58,9 +69,14 @@ test('validate query parameters: invalid input should provide a meaningful error
         .use(validator({
             type: 'object',
             properties: {
-                foo: {
-                    type: 'string',
-                    maxLength: 3
+                query: {
+                    type: 'object',
+                    properties: {
+                        foo: {
+                            type: 'string',
+                            maxLength: 3
+                        }
+                    }
                 }
             }
         }))
@@ -73,10 +89,10 @@ test('validate query parameters: invalid input should provide a meaningful error
         .expect(422);
 
     t.eq(res.body, [{
-        dataPath: '.foo',
+        dataPath: '.query.foo',
         keyword: 'maxLength',
         message: 'should NOT be longer than 3 characters',
         params: {limit: 3},
-        schemaPath: '#/properties/foo/maxLength'
+        schemaPath: '#/properties/query/properties/foo/maxLength'
     }]);
 });

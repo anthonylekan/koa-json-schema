@@ -13,7 +13,7 @@
 validate input as
 
 ```Javascript
-const input = Object.assign({}, ctx.request.query, ctx.request.body, ctx.params);
+const input = Object.assign({}, { query: ctx.request.query || {} }, { body: ctx.request.body || {} }, { params: ctx.params || {} });
 ```
 
 ```Javascript
